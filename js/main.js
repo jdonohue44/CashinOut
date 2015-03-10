@@ -13,209 +13,98 @@ window.onload = function() {
     //Test commit
 //     "use strict";
     
-    var game = new Phaser.Game( 900, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update, render: render});
+    var game = new Phaser.Game( 800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update, render: render});
     
     function preload() {
         game.load.image('world', 'assets/world.png');
-        game.load.spritesheet('ralph', 'assets/ralph.png', 80, 77);
-        game.load.image('dead','assets/dead.png'); //dead guy
-        game.load.image('alive','assets/alive.png'); //alive guy
-        game.load.image('piano','assets/piano.png'); //piano
-        game.load.audio('soundtrack', ['assets/soundtrack.mp3']);
-        game.load.audio('jump', ['assets/jump.mp3']);
-        game.load.audio('shoot', ['assets/shoot.wav']);
-        game.load.audio('applause', ['assets/applause.wav']);
-        game.load.audio('boo', ['assets/boo.wav']);
-        game.load.image('gameOver','assets/gameOver.png');//game over
+        game.load.image('platform1', 'assets/platform1.png');
+        game.load.image('water1','assets/water1.png');
+        game.load.image('water2','assets/water1.png');
+        game.load.spritesheet('guy','assets/guy.png',73.5,125);
+        game.load.audio('theme', ['assets/theme.wav']);
     }
-    //sprites
+    
+    var platform1;
     var world;
-    var ralph;
-    var alive;
-    var deads;
-    
-    //sounds
-    var music;
-    var jump;
-    var shoot;
-    
-    var cursors;
-
-    //other vars
-    var counttext = 0;
-    var counter = 60;
-    var text;
+    var water1;
+    var water2;
+    var guy;
     var jumpTimer = 0;
-    var jumpTimer2 = 0;
-    var fireRate = 100;
-	var nextFire = 0;
-	var fireButton;
-	var pianos;
-	var piano;
-    var pianoTime = 0;
-    var firingTimer = 0;
+    var aButton;
+    var bButton;
     
     
     
     function create() {
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        game.time.desiredFps = 30;
-        game.physics.arcade.gravity.y = 250;
-    	game.world.setBounds(0, 0, 900, 600);
+    	game.world.setBounds(0, 0, 8000, 500);
+    	game.physics.startSystem(Phaser.Physics.ARCADE);
+    	game.physics.arcade.gravity.y = 250;
+    	game.time.desiredFps = 30;
     	
     	world = game.add.sprite(0, 0, 'world');
-        ralph = game.add.sprite(180, 600, 'ralph');
-            
-        //loop soundtrack
-        music = game.add.audio('soundtrack',1,true);
-        music.play('',0,1,true);
+        platform1= game.add.sprite(1990, 210, 'platform1'); 
+        water1 = game.add.sprite(1993,116,'water1');
+        water2 = game.add.sprite(1993,156,'water2');
+        guy = game.add.sprite(50,500,'guy');
         
-        game.physics.enable(ralph, Phaser.Physics.ARCADE);
-        ralph.body.bounce.y = 0.2;
-        ralph.body.collideWorldBounds = true;
-        ralph.body.gravity.set(0, 180);
+        game.physics.enable(guy, Phaser.Physics.ARCADE);
+        game.physics.enable(platform1, Phaser.Physics.ARCADE);
+        game.camera.follow(guy);
+    	guy.body.bounce.y = 0.2;
+        guy.body.collideWorldBounds = true;
+        guy.body.gravity.set(0, 180);
         
-    	pianos = game.add.group();
-    	pianos.enableBody = true;
-    	pianos.physicsBodyType = Phaser.Physics.ARCADE;
-    	pianos.createMultiple(30, 'piano');
-    	pianos.setAll('anchor.x', 0.5);
-    	pianos.setAll('anchor.y', 1);
-    	pianos.setAll('outOfBoundsKill', true);
-    	pianos.setAll('checkWorldBounds', true);
-    	
-    	
-    	alives = game.add.group();
-    	alives.enableBody = true;
-    	alives.physicsBodyType = Phaser.Physics.ARCADE;
-    	alives.createMultiple(30, 'alive');
-    	alives.setAll('anchor.x', 0.5);
-    	alives.setAll('anchor.y', 1);
-    	alives.setAll('outOfBoundsKill', true);
-    	alives.setAll('checkWorldBounds', true);
-    	
-    	deads = game.add.group();
-    	deads.enableBody = true;
-    	deads.physicsBodyType = Phaser.Physics.ARCADE;
-    	deads.createMultiple(30, 'dead');
-    	deads.setAll('anchor.x', 0.5);
-    	deads.setAll('anchor.y', 1);
-    	deads.setAll('outOfBoundsKill', true);
-    	deads.setAll('checkWorldBounds', true);
-    	
-    	for (var i = 0; i < 25; i++)
-    	{
-           deads.create(game.rnd.integerInRange(70, 830), game.rnd.integerInRange(-100, -5000), 'dead');
-   		}
-   		
-   		text = game.add.text(game.world.centerX+300, game.world.centerY-270, "0 Musicians Saved", {
-        font: "22px Arial",
-        fill: "#FF0000",
-        align: "right"
-    });
-
-    text.anchor.setTo(0.5, 0.5);
-    	
-   	    ralph.animations.add('run');
-        game.camera.follow(ralph);
+        //game.add.audio('theme').play();
+        guy.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11,12], 13, true);
+        guy.animations.add('run', [13,14,15,16,17,18,19,20,21,22], 13, true);
+        guy.animations.add('jump', [26,27,28,29,30,31,32,33,34,35,36,26],13,false);
+        guy.animations.add('stand', [26],13,false);
         cursors = game.input.keyboard.createCursorKeys();
-        fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        aButton = game.input.keyboard.addKey(Phaser.Keyboard.DOWN); // 90
+        bButton = game.input.keyboard.addKey(Phaser.Keyboard.X); // 88
     }
     
-
     function update() {
-	ralph.body.velocity.x = 0;
-	deads.setAll('body.velocity.y', 100)
-	game.physics.arcade.collide(piano, deads, collisionHandler, null, this);
-	game.physics.arcade.overlap(ralph, deads, enemyHitsPlayer, null, this);
-    
+	guy.body.velocity.x = 0;
 
-    if (fireButton.isDown)
+    if (cursors.right.isDown)
     {
-        fire();
+    	guy.anchor.setTo(.5, 1); //so it flips around its middle
+        guy.scale.x = 1; //facing default direction
+    	guy.body.velocity.x = 250;
+    	guy.animations.play('run',13,true);//walk
     }
     
-    if (cursors.left.isDown) { 
-        ralph.anchor.setTo(.5, 1); //so it flips around its middle
-        ralph.scale.x = -1; //flipped
-    	ralph.body.velocity.x = -250;
-    	ralph.animations.play('run', 13, true);
+    if (cursors.right.isDown && aButton.isDown)
+    {
+    	guy.anchor.setTo(.5, 1); //so it flips around its middle
+        guy.scale.x = 1; //facing default direction
+    	guy.body.velocity.x = 350;
+    	guy.animations.play('run',13,true);
     }
     
-    if (cursors.up.isDown && ralph.body.onFloor() && game.time.now > jumpTimer) {
-        jump = game.add.audio('jump');
-        jump.play();
-    	ralph.body.velocity.y = -300;
+    if (cursors.left.isDown)
+    {
+    	guy.anchor.setTo(.5, 1); //so it flips around its middle
+        guy.scale.x = -1; //flipped
+    	guy.body.velocity.x = -250;
+    	guy.animations.play('run', 13, true);
+    }
+    
+    if (cursors.up.isDown && guy.body.onFloor() && game.time.now > jumpTimer){
+        guy.body.velocity.y = -300;
     	jumpTimer = game.time.now + 750;
-    }
-    
-
-    if (cursors.right.isDown){    
-        ralph.anchor.setTo(.5, 1); //so it flips around its middle
-        ralph.scale.x = 1; //facing default direction
-    	ralph.body.velocity.x = 250;
-    	ralph.animations.play('run', 13, true);
-    }
-    
-    if(!cursors.right.isDown && !cursors.left.isDown){
-    	ralph.animations.stop();
-    }
-
-	game.physics.arcade.collide(ralph, deads);
-    }
-    
-    function fire() {
-    //  To avoid them being allowed to fire too fast we set a time limit
-        shoot = game.add.audio('shoot');
-        shoot.play();
-    if (game.time.now > pianoTime)
-    {
-        //  Grab the first piano we can from the pool
-        piano = pianos.getFirstExists(false);
-
-        if (piano)
-        {
-            //  And fire it
-            piano.reset(ralph.x, ralph.y + 8);
-            piano.body.velocity.y = -500;
-            pianoTime = game.time.now + 200;
-        }
-    }
-}
-
-	function collisionHandler (piano, dead) {
-   	   dead.kill();
-   	   piano.kill();
-   	   var applause = game.add.audio('applause');
-       applause.play()
-   	   alive = alives.getFirstExists(false);
-       alive.reset(dead.body.x+30, dead.body.y+100);
-       updateText();
-       
-}
-
-	function enemyHitsPlayer (ralph,dead) {
-    	ralph.kill();
-    	gameover();
-    	}
-    	
-    function gameover(){
-        music.stop();
-    	game.stage.backgroundColor = '#FF0000';
-    	var gameOverScreen = game.add.image(0, 0, 'gameOver');
-    	var boo = game.add.audio('boo');
-    	boo.play();
+    	guy.animations.play('jump',13,false);
     	
     }
     
-    function updateText() {
+    if(!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown){
+        guy.animations.play('stand',13,true);
+    }
+    }
 
-    counttext++;
-
-    text.setText(counttext + " Musicians Saved");
-
-}
 
 function render() {
+    game.debug.spriteCoords(guy, 32, 32);
 }
 };
