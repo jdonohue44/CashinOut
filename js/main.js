@@ -54,7 +54,7 @@ window.onload = function() {
         guy.body.collideWorldBounds = true;
         guy.body.gravity.set(0, 180);
         
-        //game.add.audio('theme').play();
+        game.add.audio('theme').play();
         guy.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11,12], 13, true);
         guy.animations.add('run', [13,14,15,16,17,18,19,20,21,22], 13, true);
         guy.animations.add('jump', [27,28,29,30,31,32,33,34,35,36,26],13,false);
