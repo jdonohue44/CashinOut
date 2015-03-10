@@ -87,8 +87,8 @@ window.onload = function() {
     {
     	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = -1; //flipped
-    	guy.body.velocity.x = -250;
-    	guy.animations.play('run', 13, true);
+    	guy.body.velocity.x = -200;
+    	guy.animations.play('walk', 13, true);
     }
     
     if (cursors.left.isDown && aButton.isDown)
