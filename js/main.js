@@ -67,11 +67,11 @@ window.onload = function() {
     function update() {
 	guy.body.velocity.x = 0;
 
-    if (cursors.right.isDown)
+    if (cursors.right.isDown && !aButton.isDown)
     {
     	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = 1; //facing default direction
-    	guy.body.velocity.x = 250;
+    	guy.body.velocity.x = 200;
     	guy.animations.play('walk',13,true);//walk
     }
     
