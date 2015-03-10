@@ -83,12 +83,20 @@ window.onload = function() {
     	guy.animations.play('run',13,true);
     }
     
-    if (cursors.left.isDown)
+    if (cursors.left.isDown && !aButton.isDown)
     {
     	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = -1; //flipped
     	guy.body.velocity.x = -250;
     	guy.animations.play('run', 13, true);
+    }
+    
+    if (cursors.left.isDown && aButton.isDown)
+    {
+    	guy.anchor.setTo(.5, 1); //so it flips around its middle
+        guy.scale.x = -1; //facing default direction
+    	guy.body.velocity.x = -350;
+    	guy.animations.play('run',13,true);
     }
     
     if (cursors.up.isDown && guy.body.onFloor() && game.time.now > jumpTimer){
