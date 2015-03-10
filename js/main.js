@@ -67,15 +67,20 @@ window.onload = function() {
     function update() {
 	guy.body.velocity.x = 0;
 
-    if (cursors.right.isDown)
+    if (cursors.right.isDown && cursors.up.isDown)
+    {
+    	guy.anchor.setTo(.5, 1); //so it flips around its middle
+        guy.scale.x = 1; //facing default direction
+    	guy.body.velocity.x = 250;
+    	guy.animations.play('jump',13,true);//walk
+    }
+    
+    if (cursors.right.isDown && !cursors.up.isDown)
     {
     	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = 1; //facing default direction
     	guy.body.velocity.x = 250;
     	guy.animations.play('run',13,true);//walk
-    	while(cursors.up.isDown){
-    		guy.animations.play('jump',13,false);
-    		}
     }
     
     if (cursors.right.isDown && aButton.isDown)
