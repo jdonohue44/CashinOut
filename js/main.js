@@ -97,7 +97,7 @@ window.onload = function() {
     if (cursors.up.isDown && guy.body.onFloor() && game.time.now > jumpTimer){
         guy.body.velocity.y = -300;
     	jumpTimer = game.time.now + 750;
-    	guy.animations.play('jump',13,false);
+    	guy.animations.play('jump',8,false);
     	
     }
     
