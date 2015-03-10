@@ -33,6 +33,7 @@ window.onload = function() {
     var aButton;
     var bButton;
     var theme;
+    var cursors;
     
     
     
@@ -56,7 +57,7 @@ window.onload = function() {
         guy.body.gravity.set(0, 180);
         
         theme = game.add.audio('theme',1,true);
-        music.play('',0,1,true);
+        theme.play('',0,1,true);
         
         guy.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11,12], 13, true);
         guy.animations.add('run', [13,14,15,16,17,18,19,20,21,22], 13, true);
