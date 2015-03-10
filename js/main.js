@@ -73,6 +73,9 @@ window.onload = function() {
         guy.scale.x = 1; //facing default direction
     	guy.body.velocity.x = 250;
     	guy.animations.play('run',13,true);//walk
+    	if(cursors.up.isDown){
+    		guy.animations.play('jump',10,false);
+    		}
     }
     
     if (cursors.right.isDown && aButton.isDown)
