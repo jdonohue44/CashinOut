@@ -10,24 +10,18 @@ window.onload = function() {
     // You will need to change the paths you pass to "game.load.image()" or any other
     // loading functions to reflect where you are putting the assets.
     // All loading functions will typically all be found inside "preload()".
-    //Test commit
-//     "use strict";
     
     var game = new Phaser.Game( 800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update, render: render});
     
     function preload() {
         game.load.image('world', 'assets/world.png');
         game.load.image('platform1', 'assets/platform1.png');
-        game.load.image('water1','assets/water1.png');
-        game.load.image('water2','assets/water1.png');
-        game.load.spritesheet('guy','assets/guy.png',73.5,125);
+        game.load.spritesheet('guy','assets/guy.png',73.5,122.5);
         game.load.audio('theme', ['assets/theme.wav']);
     }
     
     var platform1;
     var world;
-    var water1;
-    var water2;
     var guy;
     var jumpTimer = 0;
     var aButton;
@@ -43,11 +37,9 @@ window.onload = function() {
     	game.physics.arcade.gravity.y = 250;
     	game.time.desiredFps = 30;
     	
-    	world = game.add.sprite(0, 0, 'world');
-        platform1= game.add.sprite(1990, 210, 'platform1'); 
-        water1 = game.add.sprite(1993,116,'water1');
-        water2 = game.add.sprite(1993,156,'water2');
+    	world = game.add.sprite(0, 0, 'world'); 
         guy = game.add.sprite(50,500,'guy');
+        platform1 = game.add.sprite(1920, 420, 'platform1');
         
         game.physics.enable(guy, Phaser.Physics.ARCADE);
         game.physics.enable(platform1, Phaser.Physics.ARCADE);
@@ -56,6 +48,12 @@ window.onload = function() {
         guy.body.collideWorldBounds = true;
         guy.body.gravity.set(0, 180);
         
+        platform1.body.collideWorldBounds = true;
+        platform1.body.bounce.y = 0.2;
+        platform1.body.immovable = true;
+        platform1.body.gravity.set(0, 0);
+        
+        
         theme = game.add.audio('theme',1,true);
         theme.play('',0,1,true);
         
@@ -63,9 +61,10 @@ window.onload = function() {
         guy.animations.add('run', [13,14,15,16,17,18,19,20,21,22], 13, true);
         guy.animations.add('jump', [27,28,29,30,31,32,33,34,35,36,26],13,false);
         guy.animations.add('stand', [26],13,false);
+        
         cursors = game.input.keyboard.createCursorKeys();
-        aButton = game.input.keyboard.addKey(Phaser.Keyboard.DOWN); // 90
-        bButton = game.input.keyboard.addKey(Phaser.Keyboard.X); // 88
+        aButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+        bButton = game.input.keyboard.addKey(Phaser.Keyboard.X);
     }
     
     function update() {
@@ -113,6 +112,7 @@ window.onload = function() {
     if(!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown){
         guy.animations.play('stand',13,true);
     }
+    game.physics.arcade.collide(guy, platform1);
     }
 
 
