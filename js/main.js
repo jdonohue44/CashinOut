@@ -18,11 +18,15 @@ window.onload = function() {
         game.load.image('platform1', 'assets/platform1.png');
         game.load.spritesheet('guy','assets/guy.png',73.5,122.5);
         game.load.audio('theme', ['assets/theme.wav']);
+        game.load.image('castle','assets/castle.png');
+        game.load.image('castle2','assets/castle2.png');
     }
     
     var platform1;
     var world;
     var guy;
+    var castle;
+    var castle2;
     var jumpTimer = 0;
     var aButton;
     var bButton;
@@ -38,8 +42,9 @@ window.onload = function() {
     	game.time.desiredFps = 30;
     	
     	world = game.add.sprite(0, 0, 'world'); 
-        guy = game.add.sprite(50,500,'guy');
+    	castle = game.add.sprite(800,150,'castle');
         platform1 = game.add.sprite(1920, 420, 'platform1');
+        guy = game.add.sprite(50,500,'guy');
         
         game.physics.enable(guy, Phaser.Physics.ARCADE);
         game.physics.enable(platform1, Phaser.Physics.ARCADE);
@@ -61,6 +66,7 @@ window.onload = function() {
         guy.animations.add('run', [13,14,15,16,17,18,19,20,21,22], 13, true);
         guy.animations.add('jump', [27,28,29,30,31,32,33,34,35,36,26],13,false);
         guy.animations.add('stand', [26],13,false);
+        guy.animations.add('turn', [37],13,false);
         
         cursors = game.input.keyboard.createCursorKeys();
         aButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -112,7 +118,16 @@ window.onload = function() {
     if(!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown){
         guy.animations.play('stand',13,true);
     }
+    
+    
     game.physics.arcade.collide(guy, platform1);
+    if(guy.body.x > 736){
+    	castle2 = game.add.sprite(800,150,'castle2');
+    	guy.bringToTop();
+    	if(guy.body.x > 995){
+    		guy.animations.play('turn',13,false);
+    	}
+    }
     }
 
 
