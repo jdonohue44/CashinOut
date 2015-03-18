@@ -16,6 +16,7 @@ window.onload = function() {
     function preload() {
         game.load.image('world', 'assets/world.png');
         game.load.image('platform1', 'assets/platform1.png');
+        game.load.image('platform2', 'assets/platform2.png');
         game.load.spritesheet('guy','assets/guy.png',73.5,122.5);
         game.load.audio('theme', ['assets/theme.wav']);
         game.load.audio('dieMusic', ['assets/dieMusic.wav']);
@@ -44,7 +45,7 @@ window.onload = function() {
     
     
     function create() {
-    	game.world.setBounds(0, 0, 8000, 500);
+    	game.world.setBounds(0, 0, 8000, 520);
     	game.physics.startSystem(Phaser.Physics.ARCADE);
     	game.physics.arcade.gravity.y = 250;
     	game.time.desiredFps = 30;
@@ -52,11 +53,11 @@ window.onload = function() {
     	world = game.add.sprite(0, 0, 'world'); 
     	castle = game.add.sprite(7500,150,'castle');
         platform1 = game.add.sprite(1920, 420, 'platform1');
-        platform2 = game.add.sprite(2220, 420, 'platform1');
-        platform3 = game.add.sprite(2520, 420, 'platform1');
-        platform4 = game.add.sprite(2820, 420, 'platform1');
-        platform5 = game.add.sprite(3120, 420, 'platform1');
-        guy = game.add.sprite(50,500,'guy');
+        platform2 = game.add.sprite(2220, 420, 'platform2');
+        platform3 = game.add.sprite(2520, 420, 'platform2');
+        platform4 = game.add.sprite(2820, 420, 'platform2');
+        platform5 = game.add.sprite(3120, 420, 'platform2');
+        guy = game.add.sprite(50,520,'guy');
         disk = game.add.sprite(500,580,'disk');
         
         game.physics.enable(guy, Phaser.Physics.ARCADE);
@@ -110,6 +111,7 @@ window.onload = function() {
         guy.animations.add('stand', [26],13,false);
         guy.animations.add('turn', [40],13,false);
         guy.animations.add('die', [31],13,false);
+        guy.anchor.setTo(.5, 1); //so it flips around its middle
         
         cursors = game.input.keyboard.createCursorKeys();
         aButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -126,6 +128,7 @@ window.onload = function() {
 	guy.body.velocity.x = 0;
 	
 	if(disk.body.x ==0){disk.body.velocity.x = 300;}
+	if(disk.body.x > 7700){disk.kill();}
 	
 	if(!endGame){
 		
@@ -138,13 +141,11 @@ window.onload = function() {
     if (cursors.right.isDown)
     {
     	if(!aButton.isDown){
-    	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = 1; //facing default direction
     	guy.body.velocity.x = 200;
     	guy.animations.play('walk',13,true);//walk
     	}
     	else{
-    	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = 1; //facing default direction
     	guy.body.velocity.x = 350;
     	guy.animations.play('run',13,true);
@@ -155,13 +156,11 @@ window.onload = function() {
     else if (cursors.left.isDown)
     {
     	if(!aButton.isDown){
-    	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = -1; //flipped
     	guy.body.velocity.x = -200;
     	guy.animations.play('walk', 13, true);
     	}
     	else{
-    	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = -1; //facing default direction
     	guy.body.velocity.x = -350;
     	guy.animations.play('run',13,true);
@@ -178,6 +177,11 @@ window.onload = function() {
     	if(guy.body.x > 7650){
     		guy.animations.play('turn',13,false);
     		guy.body.velocity.x = 0;
+    		var text = game.add.text(game.world.centerX, game.world.centerY-270, "Congratulations! You Win!", {
+        		font: "32px Courier",
+        		fill: "#FFFFFF",
+        		align: "center"
+    });
     		
     	}
     }
@@ -201,7 +205,11 @@ function collisionHandler (guy, disk) {
    	   gameOver();
 }
 
+function fall(){
+	   gameOver();
+}
+
 function render() {
-    game.debug.spriteCoords(disk, 32, 32);
+    game.debug.spriteCoords(guy, 32, 32);
 }
 };
