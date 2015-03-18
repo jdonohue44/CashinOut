@@ -18,20 +18,28 @@ window.onload = function() {
         game.load.image('platform1', 'assets/platform1.png');
         game.load.spritesheet('guy','assets/guy.png',73.5,122.5);
         game.load.audio('theme', ['assets/theme.wav']);
+        game.load.audio('dieMusic', ['assets/dieMusic.wav']);
         game.load.image('castle','assets/castle.png');
         game.load.image('castle2','assets/castle2.png');
+        game.load.image('disk','assets/disk.png');
     }
     
     var platform1;
+    var platform2;
+    var platform3;
+    var platform4;
+    var platform5;
     var world;
     var guy;
     var castle;
     var castle2;
+    var disk;
     var jumpTimer = 0;
     var aButton;
     var bButton;
     var theme;
     var cursors;
+    var endGame;
     
     
     
@@ -42,12 +50,23 @@ window.onload = function() {
     	game.time.desiredFps = 30;
     	
     	world = game.add.sprite(0, 0, 'world'); 
-    	castle = game.add.sprite(800,150,'castle');
+    	castle = game.add.sprite(7500,150,'castle');
         platform1 = game.add.sprite(1920, 420, 'platform1');
+        platform2 = game.add.sprite(2220, 420, 'platform1');
+        platform3 = game.add.sprite(2520, 420, 'platform1');
+        platform4 = game.add.sprite(2820, 420, 'platform1');
+        platform5 = game.add.sprite(3120, 420, 'platform1');
         guy = game.add.sprite(50,500,'guy');
+        disk = game.add.sprite(500,580,'disk');
         
         game.physics.enable(guy, Phaser.Physics.ARCADE);
         game.physics.enable(platform1, Phaser.Physics.ARCADE);
+        game.physics.enable(platform2, Phaser.Physics.ARCADE);
+        game.physics.enable(platform3, Phaser.Physics.ARCADE);
+        game.physics.enable(platform4, Phaser.Physics.ARCADE);
+        game.physics.enable(platform5, Phaser.Physics.ARCADE);
+        game.physics.enable(disk, Phaser.Physics.ARCADE);
+        
         game.camera.follow(guy);
     	guy.body.bounce.y = 0.2;
         guy.body.collideWorldBounds = true;
@@ -58,15 +77,39 @@ window.onload = function() {
         platform1.body.immovable = true;
         platform1.body.gravity.set(0, 0);
         
+        platform2.body.collideWorldBounds = true;
+        platform2.body.bounce.y = 0.2;
+        platform2.body.immovable = true;
+        platform2.body.gravity.set(0, 0);
+        
+        platform3.body.collideWorldBounds = true;
+        platform3.body.bounce.y = 0.2;
+        platform3.body.immovable = true;
+        platform3.body.gravity.set(0, 0);
+        
+        platform4.body.collideWorldBounds = true;
+        platform4.body.bounce.y = 0.2;
+        platform4.body.immovable = true;
+        platform4.body.gravity.set(0, 0);
+        
+        platform5.body.collideWorldBounds = true;
+        platform5.body.bounce.y = 0.2;
+        platform5.body.immovable = true;
+        platform5.body.gravity.set(0, 0);
+        
+        disk.body.collideWorldBounds = true;
+        disk.body.velocity.x = -250;
         
         theme = game.add.audio('theme',1,true);
         theme.play('',0,1,true);
+        
         
         guy.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11,12], 13, true);
         guy.animations.add('run', [13,14,15,16,17,18,19,20,21,22], 13, true);
         guy.animations.add('jump', [27,28,29,30,31,32,33,34,35,36,26],13,false);
         guy.animations.add('stand', [26],13,false);
-        guy.animations.add('turn', [37],13,false);
+        guy.animations.add('turn', [40],13,false);
+        guy.animations.add('die', [31],13,false);
         
         cursors = game.input.keyboard.createCursorKeys();
         aButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -74,64 +117,91 @@ window.onload = function() {
     }
     
     function update() {
+    game.physics.arcade.collide(guy, platform1);
+    game.physics.arcade.collide(guy, platform2);
+    game.physics.arcade.collide(guy, platform3);
+    game.physics.arcade.collide(guy, platform4);
+    game.physics.arcade.collide(guy, platform5);
+    game.physics.arcade.collide(guy, disk, collisionHandler, null, this);
 	guy.body.velocity.x = 0;
+	
+	if(disk.body.x ==0){disk.body.velocity.x = 300;}
+	
+	if(!endGame){
+		
+	if (cursors.up.isDown && game.time.now > jumpTimer && guy.body.velocity.y < -2){ 
+        guy.body.velocity.y = -300;
+    	jumpTimer = game.time.now + 750;
+    	guy.animations.play('jump',13,false);
+    }
 
-    if (cursors.right.isDown && !aButton.isDown)
+    if (cursors.right.isDown)
     {
+    	if(!aButton.isDown){
     	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = 1; //facing default direction
     	guy.body.velocity.x = 200;
     	guy.animations.play('walk',13,true);//walk
-    }
-    
-    if (cursors.right.isDown && aButton.isDown)
-    {
+    	}
+    	else{
     	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = 1; //facing default direction
     	guy.body.velocity.x = 350;
     	guy.animations.play('run',13,true);
+       }
     }
     
-    if (cursors.left.isDown && !aButton.isDown)
+    
+    else if (cursors.left.isDown)
     {
+    	if(!aButton.isDown){
     	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = -1; //flipped
     	guy.body.velocity.x = -200;
     	guy.animations.play('walk', 13, true);
-    }
-    
-    if (cursors.left.isDown && aButton.isDown)
-    {
+    	}
+    	else{
     	guy.anchor.setTo(.5, 1); //so it flips around its middle
         guy.scale.x = -1; //facing default direction
     	guy.body.velocity.x = -350;
     	guy.animations.play('run',13,true);
+        }
     }
     
-    if (cursors.up.isDown && guy.body.onFloor() && game.time.now > jumpTimer){
-        guy.body.velocity.y = -300;
-    	jumpTimer = game.time.now + 750;
-    	guy.animations.play('jump',13,false);
-    	
-    }
-    
-    if(!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown){
+    else if (!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown){
         guy.animations.play('stand',13,true);
     }
-    
-    
-    game.physics.arcade.collide(guy, platform1);
-    if(guy.body.x > 736){
-    	castle2 = game.add.sprite(800,150,'castle2');
+    	  
+    if(guy.body.x > 7400){
+    	castle2 = game.add.sprite(7500,150,'castle2');
     	guy.bringToTop();
-    	if(guy.body.x > 995){
+    	if(guy.body.x > 7650){
     		guy.animations.play('turn',13,false);
+    		guy.body.velocity.x = 0;
+    		
     	}
     }
     }
+        else{
+    	guy.animations.play('die',13,true);
+    	guy.body.collideWorldBounds = false;
+    	guy.body.immovable = true;
+    }
+    }
 
+function gameOver(){
+	theme.stop();
+    var dieMusic = game.add.audio('dieMusic');
+    dieMusic.play();
+	guy.body.velocity.y = -300;
+	endGame = true;
+}
+
+function collisionHandler (guy, disk) {
+   	   gameOver();
+}
 
 function render() {
-    game.debug.spriteCoords(guy, 32, 32);
+    game.debug.spriteCoords(disk, 32, 32);
 }
 };
