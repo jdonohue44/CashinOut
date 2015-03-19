@@ -130,7 +130,13 @@ window.onload = function() {
     game.physics.arcade.collide(guy, shell, collisionHandler, null, this);
 	guy.body.velocity.x = 0;
 	
-	if((guy.body.x > 2121) && (guy.body.x < 3604) && (guy.body.y > 370)){endGame =true;}
+	if((guy.body.x > 2121) && (guy.body.x < 3604) && (guy.body.y > 370)){
+		theme.stop();
+    	var dieMusic = game.add.audio('dieMusic');
+    	dieMusic.play();
+		guy.body.velocity.y = -300;
+		endGame =true;
+	}
 	
 	if(shell.body.x ==0){shell.body.velocity.x = 380;}
 	if(shell.body.x > 7700){shell.kill();}
