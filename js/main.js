@@ -131,12 +131,7 @@ window.onload = function() {
 	guy.body.velocity.x = 0;
 	
 	if((guy.body.x > 2121) && (guy.body.x < 3604) && (guy.body.y > 370)){
-		theme.stop();
-		guy.collideWorldBounds = false;
-    	var dieMusic = game.add.audio('dieMusic');
-    	dieMusic.play();
-		guy.body.velocity.y = -300;
-		endGame =true;
+		gameOver();
 	}
 	
 	if(shell.body.x ==0){shell.body.velocity.x = 380;}
