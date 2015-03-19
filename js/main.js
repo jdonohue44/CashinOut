@@ -132,6 +132,7 @@ window.onload = function() {
 	
 	if((guy.body.x > 2121) && (guy.body.x < 3604) && (guy.body.y > 370)){
 		theme.stop();
+		guy.collideWorldBounds = false;
     	var dieMusic = game.add.audio('dieMusic');
     	dieMusic.play();
 		guy.body.velocity.y = -300;
