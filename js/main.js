@@ -101,7 +101,7 @@ window.onload = function() {
         platform5.body.gravity.set(0, 0);
         
         shell.body.collideWorldBounds = true;
-        shell.body.velocity.x = -300;
+        shell.body.velocity.x = -380;
         
         theme = game.add.audio('theme',1,true);
         jump = game.add.audio('jump');
@@ -130,7 +130,9 @@ window.onload = function() {
     game.physics.arcade.collide(guy, shell, collisionHandler, null, this);
 	guy.body.velocity.x = 0;
 	
-	if(shell.body.x ==0){shell.body.velocity.x = 300;}
+	if((guy.body.x > 2121) && (guy.body.x < 3604) && (guy.body.y > 370)){endGame =true;}
+	
+	if(shell.body.x ==0){shell.body.velocity.x = 380;}
 	if(shell.body.x > 7700){shell.kill();}
 	
 	if(!endGame){
@@ -216,6 +218,6 @@ function fall(){
 }
 
 function render() {
-    game.debug.spriteCoords(guy, 32, 32);
+   //  game.debug.spriteCoords(guy, 32, 32);
 }
 };
