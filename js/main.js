@@ -20,9 +20,10 @@ window.onload = function() {
         game.load.spritesheet('guy','assets/guy.png',73.5,122.5);
         game.load.audio('theme', ['assets/theme.wav']);
         game.load.audio('dieMusic', ['assets/dieMusic.wav']);
+        game.load.audio('jump', ['assets/jump.wav']);
         game.load.image('castle','assets/castle.png');
         game.load.image('castle2','assets/castle2.png');
-        game.load.image('disk','assets/disk.png');
+        game.load.image('shell','assets/shell.png');
     }
     
     var platform1;
@@ -34,13 +35,14 @@ window.onload = function() {
     var guy;
     var castle;
     var castle2;
-    var disk;
+    var shell;
     var jumpTimer = 0;
     var aButton;
     var bButton;
     var theme;
     var cursors;
     var endGame;
+    var jump;
     
     
     
@@ -58,7 +60,7 @@ window.onload = function() {
         platform4 = game.add.sprite(2820, 420, 'platform2');
         platform5 = game.add.sprite(3120, 420, 'platform2');
         guy = game.add.sprite(50,520,'guy');
-        disk = game.add.sprite(500,580,'disk');
+        shell = game.add.sprite(800,580,'shell');
         
         game.physics.enable(guy, Phaser.Physics.ARCADE);
         game.physics.enable(platform1, Phaser.Physics.ARCADE);
@@ -66,7 +68,7 @@ window.onload = function() {
         game.physics.enable(platform3, Phaser.Physics.ARCADE);
         game.physics.enable(platform4, Phaser.Physics.ARCADE);
         game.physics.enable(platform5, Phaser.Physics.ARCADE);
-        game.physics.enable(disk, Phaser.Physics.ARCADE);
+        game.physics.enable(shell, Phaser.Physics.ARCADE);
         
         game.camera.follow(guy);
     	guy.body.bounce.y = 0.2;
@@ -98,10 +100,11 @@ window.onload = function() {
         platform5.body.immovable = true;
         platform5.body.gravity.set(0, 0);
         
-        disk.body.collideWorldBounds = true;
-        disk.body.velocity.x = -250;
+        shell.body.collideWorldBounds = true;
+        shell.body.velocity.x = -300;
         
         theme = game.add.audio('theme',1,true);
+        jump = game.add.audio('jump');
         theme.play('',0,1,true);
         
         
@@ -124,15 +127,16 @@ window.onload = function() {
     game.physics.arcade.collide(guy, platform3);
     game.physics.arcade.collide(guy, platform4);
     game.physics.arcade.collide(guy, platform5);
-    game.physics.arcade.collide(guy, disk, collisionHandler, null, this);
+    game.physics.arcade.collide(guy, shell, collisionHandler, null, this);
 	guy.body.velocity.x = 0;
 	
-	if(disk.body.x ==0){disk.body.velocity.x = 300;}
-	if(disk.body.x > 7700){disk.kill();}
+	if(shell.body.x ==0){shell.body.velocity.x = 300;}
+	if(shell.body.x > 7700){shell.kill();}
 	
 	if(!endGame){
 		
 	if (cursors.up.isDown && game.time.now > jumpTimer && guy.body.velocity.y < -2){ 
+   	    jump.play();
         guy.body.velocity.y = -300;
     	jumpTimer = game.time.now + 750;
     	guy.animations.play('jump',13,false);
@@ -177,12 +181,14 @@ window.onload = function() {
     	if(guy.body.x > 7650){
     		guy.animations.play('turn',13,false);
     		guy.body.velocity.x = 0;
-    		var text = game.add.text(game.world.centerX, game.world.centerY-270, "Congratulations! You Win!", {
-        		font: "32px Courier",
-        		fill: "#FFFFFF",
-        		align: "center"
-    });
-    		
+    		var style = { font: "48px Arial", fill: "#ffffff", align: "center" };
+    		var text = game.add.text(guy.body.x - 200, guy.body.y - 170, "Congratulations! \nYou win!\n", style);
+			text.anchor.set(0.5);
+			//  And now we'll color in some of the letters
+			text.addColor('#ffff00', 16);
+			text.addColor('#ffffff', 25);
+			text.addColor('#ff00ff', 28);
+			text.addColor('#ffffff', 32);
     	}
     }
     }
@@ -201,7 +207,7 @@ function gameOver(){
 	endGame = true;
 }
 
-function collisionHandler (guy, disk) {
+function collisionHandler (guy, shell) {
    	   gameOver();
 }
 
