@@ -17,13 +17,16 @@ window.onload = function() {
         game.load.image('world', 'assets/world.png');
         game.load.image('platform1', 'assets/platform1.png');
         game.load.image('platform2', 'assets/platform2.png');
-        game.load.spritesheet('guy','assets/guy.png',73.5,122.5);
-        game.load.audio('theme', ['assets/theme.wav']);
+        game.load.spritesheet('guy','assets/rich.png',73.5,122.5);
+        game.load.spritesheet('goomba','assets/goomba.png',40,43);
+        game.load.audio('theme', ['assets/Money.mp3']);
         game.load.audio('dieMusic', ['assets/dieMusic.wav']);
         game.load.audio('jump', ['assets/jump.wav']);
         game.load.image('castle','assets/castle.png');
         game.load.image('castle2','assets/castle2.png');
         game.load.image('shell','assets/shell.png');
+        game.load.image('shell2','assets/shell.png');
+        game.load.image('shell3','assets/shell.png');
     }
     
     var platform1;
@@ -36,6 +39,9 @@ window.onload = function() {
     var castle;
     var castle2;
     var shell;
+    var shell2;
+    var shell3;
+    var goomba;
     var jumpTimer = 0;
     var aButton;
     var bButton;
@@ -49,26 +55,30 @@ window.onload = function() {
     function create() {
     	game.world.setBounds(0, 0, 8000, 520);
     	game.physics.startSystem(Phaser.Physics.ARCADE);
-    	game.physics.arcade.gravity.y = 250;
+    	game.physics.arcade.gravity.y = 550;
     	game.time.desiredFps = 30;
     	
     	world = game.add.sprite(0, 0, 'world'); 
     	castle = game.add.sprite(7500,150,'castle');
         platform1 = game.add.sprite(1920, 420, 'platform1');
-        platform2 = game.add.sprite(2220, 420, 'platform2');
-        platform3 = game.add.sprite(2520, 420, 'platform2');
-        platform4 = game.add.sprite(2820, 420, 'platform2');
-        platform5 = game.add.sprite(3120, 420, 'platform2');
+        platform2 = game.add.sprite(2400, 420, 'platform2');
+        platform3 = game.add.sprite(2890, 420, 'platform2');
+        platform4 = game.add.sprite(3290, 420, 'platform2');
         guy = game.add.sprite(50,520,'guy');
-        shell = game.add.sprite(800,580,'shell');
+        goomba = game.add.sprite(500,480,'goomba');
+        shell = game.add.sprite(1500,580,'shell');
+        shell2 = game.add.sprite(3000,580,'shell');
+        shell3 = game.add.sprite(5000,580,'shell');
         
         game.physics.enable(guy, Phaser.Physics.ARCADE);
         game.physics.enable(platform1, Phaser.Physics.ARCADE);
         game.physics.enable(platform2, Phaser.Physics.ARCADE);
         game.physics.enable(platform3, Phaser.Physics.ARCADE);
         game.physics.enable(platform4, Phaser.Physics.ARCADE);
-        game.physics.enable(platform5, Phaser.Physics.ARCADE);
         game.physics.enable(shell, Phaser.Physics.ARCADE);
+        game.physics.enable(shell2, Phaser.Physics.ARCADE);
+        game.physics.enable(shell3, Phaser.Physics.ARCADE);
+        game.physics.enable(goomba, Phaser.Physics.ARCADE);
         
         game.camera.follow(guy);
     	guy.body.bounce.y = 0.2;
@@ -95,18 +105,21 @@ window.onload = function() {
         platform4.body.immovable = true;
         platform4.body.gravity.set(0, 0);
         
-        platform5.body.collideWorldBounds = true;
-        platform5.body.bounce.y = 0.2;
-        platform5.body.immovable = true;
-        platform5.body.gravity.set(0, 0);
-        
         shell.body.collideWorldBounds = true;
         shell.body.velocity.x = -380;
+        
+        shell2.body.collideWorldBounds = true;
+        shell2.body.velocity.x = -380;
+        
+        shell3.body.collideWorldBounds = true;
+        shell3.body.velocity.x = -380;
+        
+        goomba.body.collideWorldBounds = true;
+        goomba.body.velocity.x = -200;
         
         theme = game.add.audio('theme',1,true);
         jump = game.add.audio('jump');
         theme.play('',0,1,true);
-        
         
         guy.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11,12], 13, true);
         guy.animations.add('run', [13,14,15,16,17,18,19,20,21,22], 13, true);
@@ -115,6 +128,9 @@ window.onload = function() {
         guy.animations.add('turn', [40],13,false);
         guy.animations.add('die', [31],13,false);
         guy.anchor.setTo(.5, 1); //so it flips around its middle
+        
+        goomba.animations.add('walk', [10,11,12], 13, true);
+        goomba.anchor.setTo(.5, 1); //so it flips around its middle
         
         cursors = game.input.keyboard.createCursorKeys();
         aButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -126,13 +142,17 @@ window.onload = function() {
     game.physics.arcade.collide(guy, platform2);
     game.physics.arcade.collide(guy, platform3);
     game.physics.arcade.collide(guy, platform4);
-    game.physics.arcade.collide(guy, platform5);
     game.physics.arcade.collide(guy, shell, collisionHandler, null, this);
+    game.physics.arcade.collide(guy, shell2, collisionHandler, null, this);
+    game.physics.arcade.collide(guy, shell3, collisionHandler, null, this);
 	guy.body.velocity.x = 0;
-	
-	
+
 	if(shell.body.x ==0){shell.body.velocity.x = 380;}
 	if(shell.body.x > 7700){shell.kill();}
+	if(shell2.body.x ==0){shell2.body.velocity.x = 380;}
+	if(shell2.body.x > 7700){shell2.kill();}
+	if(shell3.body.x ==0){shell3.body.velocity.x = 380;}
+	if(shell3.body.x > 7700){shell3.kill();}
 	
 	if(!endGame){
 	
@@ -142,7 +162,7 @@ window.onload = function() {
 		
 	if (cursors.up.isDown && game.time.now > jumpTimer && guy.body.velocity.y < -2){ 
    	    jump.play();
-        guy.body.velocity.y = -300;
+        guy.body.velocity.y = -450;
     	jumpTimer = game.time.now + 750;
     	guy.animations.play('jump',13,false);
     }
@@ -213,6 +233,12 @@ function gameOver(){
 }
 
 function collisionHandler (guy, shell) {
+   	   gameOver();
+}
+function collisionHandler (guy, shell2) {
+   	   gameOver();
+}
+function collisionHandler (guy, shell3) {
    	   gameOver();
 }
 
