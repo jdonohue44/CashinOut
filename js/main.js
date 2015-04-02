@@ -20,7 +20,7 @@ window.onload = function() {
         game.load.spritesheet('guy','assets/rich.png',73.5,122.5);
         game.load.spritesheet('goomba','assets/goomba.png',40,43);
         game.load.audio('theme', ['assets/Money.mp3']);
-        game.load.audio('dieMusic', ['assets/dieMusic.wav']);
+        game.load.audio('dieMusic', ['assets/fail.mp3']);
         game.load.audio('jump', ['assets/jump.wav']);
         game.load.image('castle','assets/castle.png');
         game.load.image('castle2','assets/castle2.png');
