@@ -139,6 +139,7 @@ window.onload = function() {
     }
     
     function update() {
+    guy.body.velocity.x = 0;
     game.physics.arcade.collide(guy, platform1);
     game.physics.arcade.collide(guy, platform2);
     game.physics.arcade.collide(guy, platform3);
@@ -146,10 +147,9 @@ window.onload = function() {
     game.physics.arcade.collide(guy, shell, collisionHandler, null, this);
     game.physics.arcade.collide(guy, shell2, collisionHandler, null, this);
     game.physics.arcade.collide(guy, shell3, collisionHandler, null, this);
-	guy.body.velocity.x = 0;
-	goomba.animations.play('walk',13,true);
 	
 	//goomba stuff
+	goomba.animations.play('walk',13,true);
 	if(goomba.body.x >= 2000){goomba.scale.x = -1;goomba.body.velocity.x = -200;}
 	if(goomba.body.x == 0){goomba.scale.x = 1;goomba.body.velocity.x = 200;}
 	
@@ -162,26 +162,25 @@ window.onload = function() {
 	if(shell3.body.x > 7700){shell3.kill();}
 	
 	if(!endGame){
-	
-	if((guy.body.x > 2121) && (guy.body.x < 3604) && (guy.body.y > 370)){
+	if((guy.body.x > 2121) && (guy.body.x < 3604) && (guy.body.y > 370)){ //guy falls in water
 		gameOver();
 	}
 		
-	if (cursors.up.isDown && game.time.now > jumpTimer && guy.body.velocity.y < -2){ 
+	if (cursors.up.isDown && game.time.now > jumpTimer && guy.body.velocity.y < -2){ //jump
    	    jump.play();
         guy.body.velocity.y = -450;
     	jumpTimer = game.time.now + 750;
     	guy.animations.play('jump',13,false);
     }
 
-    if (cursors.right.isDown)
+    if (cursors.right.isDown) //move right
     {
-    	if(!aButton.isDown){
+    	if(!aButton.isDown){//walk
         guy.scale.x = 1; //facing default direction
     	guy.body.velocity.x = 200;
     	guy.animations.play('walk',13,true);//walk
     	}
-    	else{
+    	else{//sprint
         guy.scale.x = 1; //facing default direction
     	guy.body.velocity.x = 350;
     	guy.animations.play('run',13,true);
@@ -189,25 +188,25 @@ window.onload = function() {
     }
     
     
-    else if (cursors.left.isDown)
+    else if (cursors.left.isDown) //move left
     {
-    	if(!aButton.isDown){
-        guy.scale.x = -1; //flipped
+    	if(!aButton.isDown){ //walk
+        guy.scale.x = -1; //flip
     	guy.body.velocity.x = -200;
     	guy.animations.play('walk', 13, true);
     	}
-    	else{
-        guy.scale.x = -1; //facing default direction
+    	else{ //run
+        guy.scale.x = -1; //flip
     	guy.body.velocity.x = -350;
     	guy.animations.play('run',13,true);
         }
     }
     
-    else if (!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown){
+    else if (!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown){ //stand still
         guy.animations.play('stand',13,true);
     }
     	  
-    if(guy.body.x > 7400){
+    if(guy.body.x > 7400){ //made it to castle
     	castle2 = game.add.sprite(7500,150,'castle2');
     	guy.bringToTop();
     	if(guy.body.x > 7650){
@@ -222,13 +221,13 @@ window.onload = function() {
 			text.addColor('#ff00ff', 28);
 			text.addColor('#ffffff', 32);
     	}
+      }
     }
-    }
-        else{
+        else{ //died
     	guy.animations.play('die',13,true);
     	guy.body.collideWorldBounds = false;
     	guy.body.immovable = true;
-    }
+        }
     }
 
 function gameOver(){
