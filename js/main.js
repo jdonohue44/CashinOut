@@ -18,7 +18,7 @@ window.onload = function() {
         game.load.image('platform1', 'assets/platform1.png');
         game.load.image('platform2', 'assets/platform2.png');
         game.load.spritesheet('guy','assets/rich.png',73.5,122.5);
-        game.load.spritesheet('goomba','assets/goomba.png',40,43);
+        game.load.spritesheet('goomba','assets/goomba.png',40,42);
         game.load.audio('theme', ['assets/Money.mp3']);
         game.load.audio('dieMusic', ['assets/fail.mp3']);
         game.load.audio('jump', ['assets/jump.wav']);
@@ -106,13 +106,13 @@ window.onload = function() {
         platform4.body.gravity.set(0, 0);
         
         shell.body.collideWorldBounds = true;
-        shell.body.velocity.x = -380;
+        shell.body.velocity.x = -300;
         
         shell2.body.collideWorldBounds = true;
-        shell2.body.velocity.x = -380;
+        shell2.body.velocity.x = -300;
         
         shell3.body.collideWorldBounds = true;
-        shell3.body.velocity.x = -380;
+        shell3.body.velocity.x = -300;
         
         goomba.body.collideWorldBounds = true;
         goomba.body.velocity.x = -200;
@@ -129,8 +129,9 @@ window.onload = function() {
         guy.animations.add('die', [31],13,false);
         guy.anchor.setTo(.5, 1); //so it flips around its middle
         
-        goomba.animations.add('walk', [10,11,12], 13, true);
+        goomba.animations.add('walk', [0,1,2,3,4], 13, true);
         goomba.anchor.setTo(.5, 1); //so it flips around its middle
+        goomba.scale.x = -1;
         
         cursors = game.input.keyboard.createCursorKeys();
         aButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -146,12 +147,18 @@ window.onload = function() {
     game.physics.arcade.collide(guy, shell2, collisionHandler, null, this);
     game.physics.arcade.collide(guy, shell3, collisionHandler, null, this);
 	guy.body.velocity.x = 0;
-
-	if(shell.body.x ==0){shell.body.velocity.x = 380;}
+	goomba.animations.play('walk',13,true);
+	
+	//goomba stuff
+	if(goomba.body.x >= 2000){goomba.scale.x = -1;goomba.body.velocity.x = -200;}
+	if(goomba.body.x == 0){goomba.scale.x = 1;goomba.body.velocity.x = 200;}
+	
+	//shell stuff
+	if(shell.body.x ==0){shell.body.velocity.x = 300;}
 	if(shell.body.x > 7700){shell.kill();}
-	if(shell2.body.x ==0){shell2.body.velocity.x = 380;}
+	if(shell2.body.x ==0){shell2.body.velocity.x = 300;}
 	if(shell2.body.x > 7700){shell2.kill();}
-	if(shell3.body.x ==0){shell3.body.velocity.x = 380;}
+	if(shell3.body.x ==0){shell3.body.velocity.x = 300;}
 	if(shell3.body.x > 7700){shell3.kill();}
 	
 	if(!endGame){
@@ -247,6 +254,6 @@ function fall(){
 }
 
 function render() {
-   //  game.debug.spriteCoords(guy, 32, 32);
+    game.debug.spriteCoords(guy, 32, 32);
 }
 };
