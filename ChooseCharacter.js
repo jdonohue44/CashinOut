@@ -1,6 +1,7 @@
 BasicGame.ChooseCharacter = function (game) {
 
 	this.music = null;
+	this.music2 = null;
 	this.richButton = null;
 	this.diniButton = null;
 
@@ -22,6 +23,8 @@ BasicGame.ChooseCharacter.prototype = {
     	var text2 = this.add.text(710, 370, "Play as Dini", style);
     	var style3 = { font: "48px Arial", fill: "#ffffff", align: "center" };
     	this.music = this.add.audio('coin');
+    	this.music2 = this.add.audio('titleMusic');
+		this.music2.play();
 		
 		var text3 = this.add.text(500, 120, "Richio & Dinio", style);
 		text3.anchor.set(0.5);
@@ -42,6 +45,7 @@ BasicGame.ChooseCharacter.prototype = {
 
 		//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
 		//	And start the actual game
+		this.music2.stop();
 		this.music.play();
 		this.state.start('RichGame');
 
@@ -51,6 +55,7 @@ BasicGame.ChooseCharacter.prototype = {
 
 		//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
 		//	And start the actual game
+		this.music2.stop();
 		this.music.play();
 		this.state.start('DiniGame');
 

@@ -37,6 +37,7 @@ BasicGame.Preloader.prototype = {
         this.load.audio('coin', ['assets/coin.wav']);
         this.load.audio('jump', ['assets/jump.wav']);
         this.load.audio('titleMusic', ['assets/titleMusic.wav']);
+        this.load.audio('startMusic', ['assets/start.wav']);
         this.load.image('castle','assets/castle.png');
         this.load.image('castle2','assets/castle2.png');
         this.load.image('shell','assets/shell.png');
@@ -45,6 +46,7 @@ BasicGame.Preloader.prototype = {
         this.load.image('shell2','assets/shell.png');
         this.load.image('shell3','assets/shell.png');
         this.load.image('playButton', 'assets/play_button.png');
+        this.load.image('resetButton', 'assets/reset.png');
 		//	+ lots of other required assets here
 
 	},

@@ -4,6 +4,7 @@ BasicGame.RichGame = function (game) {
     //  When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 	this.launchButton;
 	this.quitButton;
+	this.resetButton;
 	this.player;
     this.game;      //  a reference to the currently running game (Phaser.Game)
     this.add;       //  used to add sprites, text, groups, etc (Phaser.GameObjectFactory)
@@ -35,12 +36,12 @@ BasicGame.RichGame = function (game) {
     var world;
     var guy;
     var castle;
-    var castle2;
     var shell;
     var shell2;
     var shell3;
     var goomba;
     var jumpTimer = 0;
+    var timer = 0;
     var aButton;
     var bButton;
     var theme;
@@ -57,7 +58,7 @@ BasicGame.RichGame.prototype = {
     	this.time.desiredFps = 30;
     	
     	world = this.add.sprite(0, 0, 'world'); 
-    	castle = this.add.sprite(7500,150,'castle');
+    	castle = this.add.sprite(7500,290,'castle');
         platform1 = this.add.sprite(1920, 420, 'platform1');
         platform2 = this.add.sprite(2400, 420, 'platform2');
         platform3 = this.add.sprite(2890, 420, 'platform2');
@@ -144,36 +145,35 @@ BasicGame.RichGame.prototype = {
 		dieMusic.play();
 		guy.body.velocity.y = -300;
 		endGame = true;
+		this.state.start("Lose");
 		//Go to Lose State
 	},
 	
     collisionHandler: function (guy, shell) {
    	   this.gameOver(this);
-   	   this.state.start('Lose');
     },
     
     collisionHandler: function (guy, shell2) {
    	   this.gameOver(this);
-   	   this.state.start('Lose');
     },
     
     collisionHandler: function (guy, shell3) {
    	   this.gameOver(this);
-   	   this.state.start('Lose');
     },
     
     collisionHandler: function (guy, goomba) {
    	   this.gameOver(this);
-   	   this.state.start('Lose');
     },
     
     fall: function(pointer){
 	   this.gameOver(this);
-	   this.state.start('Lose');
     },
 
     quitGame: function (pointer) {
-        this.state.start('Lose');
+    },
+    
+    restart: function (pointer){
+    	this.state.start("ChooseCharacter");
     },
 
     update: function () {
@@ -247,21 +247,10 @@ BasicGame.RichGame.prototype = {
 				guy.animations.play('stand',13,true);
 			}
 		  
-			if(guy.body.x > 7400){ //made it to castle
-				castle2 = this.add.sprite(7500,150,'castle2');
-				guy.bringToTop();
-				if(guy.body.x > 7650){
-					guy.animations.play('turn',13,false);
-					guy.body.velocity.x = 0;
-					var style = { font: "48px Arial", fill: "#ffffff", align: "center" };
-					var text = this.add.text(guy.body.x - 200, guy.body.y - 170, "Congratulations! \nYou win!\n", style);
-					text.anchor.set(0.5);
-					//  And now we'll color in some of the letters
-					text.addColor('#ffff00', 16);
-					text.addColor('#ffffff', 25);
-					text.addColor('#ff00ff', 28);
-					text.addColor('#ffffff', 32);
-				}
+			if(guy.body.x > 7450){ //made it to castle
+				theme.stop();
+				this.state.start("Win");
+
 			  }
 			}
 			

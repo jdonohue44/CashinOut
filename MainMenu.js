@@ -1,7 +1,7 @@
 BasicGame.MainMenu = function (game) {
 
-	this.music = null;
 	this.playButton = null;
+	this.music = null;
 
 };
 
@@ -13,8 +13,6 @@ BasicGame.MainMenu.prototype = {
 		//	Here all we're doing is playing some music and adding a picture and button
 		//	Naturally I expect you to do something significantly better :)
 
-		this.music = this.add.audio('titleMusic',1,true);
-		this.music.play('',0,1,true);
 		this.add.sprite(-1, 0, 'preloaderBackground');
 		var style = { font: "48px Arial", fill: "#ffffff", align: "center" };
 		
@@ -25,7 +23,9 @@ BasicGame.MainMenu.prototype = {
 		text.addColor('#ffffff', 5);
 		text.addColor('#ff00ff', 10);
 		text.addColor('#ffffff', 15);
-
+		
+		this.music = this.add.audio("startMusic");
+		this.music.play();
 		this.playButton = this.add.button(425,150, 'playButton', this.startGame, this);
 	},
 
@@ -40,7 +40,6 @@ BasicGame.MainMenu.prototype = {
 		//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
 
 		//	And start the actual game
-		this.music.stop();
 		this.state.start('ChooseCharacter');
 
 	}
