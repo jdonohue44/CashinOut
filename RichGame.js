@@ -138,31 +138,32 @@ BasicGame.RichGame.prototype = {
     },
     
 	gameOver: function (pointer){
-		this.theme.stop();
-		var dieMusic = game.add.audio('dieMusic');
+		theme.stop();
+		var dieMusic = this.add.audio('dieMusic');
 		dieMusic.play();
 		guy.body.velocity.y = -300;
 		endGame = true;
+		//Go to Lose State
 	},
 	
     collisionHandler: function (guy, shell, pointer) {
-   	   gameOver();
+   	   gameOver(this);
     },
     
-    collisionHandler: function (guy, shell2, pointer) {
-   	   gameOver();
+    collisionHandler: function (guy, shell2) {
+   	   gameOver(this);
     },
     
-    collisionHandler: function (guy, shell3, pointer) {
-   	   gameOver();
+    collisionHandler: function (guy, shell3) {
+   	   gameOver(this);
     },
     
-    collisionHandler: function (guy, goomba, pointer) {
-   	   gameOver();
+    collisionHandler: function (guy, goomba) {
+   	   gameOver(this);
     },
     
     fall: function(pointer){
-	   gameOver();
+	   gameOver(this);
     },
 
     quitGame: function (pointer) {
@@ -175,10 +176,10 @@ BasicGame.RichGame.prototype = {
     this.physics.arcade.collide(guy, platform2);
     this.physics.arcade.collide(guy, platform3);
     this.physics.arcade.collide(guy, platform4);
-//     this.physics.arcade.collide(guy, shell, collisionHandler, null, this);
-//     this.physics.arcade.collide(guy, shell2, collisionHandler, null, this);
-//     this.physics.arcade.collide(guy, shell3, collisionHandler, null, this);
-//     this.physics.arcade.collide(guy, goomba, collisionHandler, null, this);
+    this.physics.arcade.collide(guy, shell, collisionHandler, null, this, this);
+    this.physics.arcade.collide(guy, shell2, collisionHandler, null, this);
+    this.physics.arcade.collide(guy, shell3, collisionHandler, null, this);
+    this.physics.arcade.collide(guy, goomba, collisionHandler, null, this);
 	
 	//goomba stuff
 	goomba.animations.play('walk',13,true);
