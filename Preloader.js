@@ -32,8 +32,9 @@ BasicGame.Preloader.prototype = {
         this.load.image('platform2', 'assets/platform2.png');
         this.load.spritesheet('guy','assets/rich.png',73.5,122.5);
         this.load.spritesheet('goomba','assets/goomba.png',40,42);
-        this.load.audio('theme', ['assets/Money.mp3']);
+        this.load.audio('theme', ['assets/theme.wav']);
         this.load.audio('dieMusic', ['assets/fail.mp3']);
+        this.load.audio('coin', ['assets/coin.wav']);
         this.load.audio('jump', ['assets/jump.wav']);
         this.load.audio('titleMusic', ['assets/titleMusic.wav']);
         this.load.image('castle','assets/castle.png');

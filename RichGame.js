@@ -67,6 +67,7 @@ BasicGame.RichGame.prototype = {
         shell = this.add.sprite(1500,580,'shell');
         shell2 = this.add.sprite(3000,580,'shell');
         shell3 = this.add.sprite(5000,580,'shell');
+        endGame = false;
         
         this.physics.enable(guy, Phaser.Physics.ARCADE);
         this.physics.enable(platform1, Phaser.Physics.ARCADE);
@@ -146,28 +147,33 @@ BasicGame.RichGame.prototype = {
 		//Go to Lose State
 	},
 	
-    collisionHandler: function (guy, shell, pointer) {
-   	   gameOver(this);
+    collisionHandler: function (guy, shell) {
+   	   this.gameOver(this);
+   	   this.state.start('Lose');
     },
     
     collisionHandler: function (guy, shell2) {
-   	   gameOver(this);
+   	   this.gameOver(this);
+   	   this.state.start('Lose');
     },
     
     collisionHandler: function (guy, shell3) {
-   	   gameOver(this);
+   	   this.gameOver(this);
+   	   this.state.start('Lose');
     },
     
     collisionHandler: function (guy, goomba) {
-   	   gameOver(this);
+   	   this.gameOver(this);
+   	   this.state.start('Lose');
     },
     
     fall: function(pointer){
-	   gameOver(this);
+	   this.gameOver(this);
+	   this.state.start('Lose');
     },
 
     quitGame: function (pointer) {
-        this.state.start('MainMenu');
+        this.state.start('Lose');
     },
 
     update: function () {
@@ -176,10 +182,10 @@ BasicGame.RichGame.prototype = {
     this.physics.arcade.collide(guy, platform2);
     this.physics.arcade.collide(guy, platform3);
     this.physics.arcade.collide(guy, platform4);
-    this.physics.arcade.collide(guy, shell, collisionHandler, null, this, this);
-    this.physics.arcade.collide(guy, shell2, collisionHandler, null, this);
-    this.physics.arcade.collide(guy, shell3, collisionHandler, null, this);
-    this.physics.arcade.collide(guy, goomba, collisionHandler, null, this);
+    this.physics.arcade.collide(guy, shell,  this.collisionHandler, null, this);
+    this.physics.arcade.collide(guy, shell2, this.collisionHandler, null, this);
+    this.physics.arcade.collide(guy, shell3, this.collisionHandler, null, this);
+    this.physics.arcade.collide(guy, goomba, this.collisionHandler, null, this);
 	
 	//goomba stuff
 	goomba.animations.play('walk',13,true);
