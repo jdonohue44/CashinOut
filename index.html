@@ -1,33 +1,50 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Lets Play!</title>
-    <script src="js/phaser.js"></script>
-    <script src="js/main.js"></script>
-
-<style>
-body
-{
-    color: #777;
-    font-family: "Avenir", Verdana, sans-serif;
-}
-#readme
-{
-    margin-top: 10px;
-}
-</style>
+	<meta charset="UTF-8" />
+	<title>Mario</title>
+	<script src="phaser.js"></script>
+	<script src="Boot.js"></script>
+	<script src="Preloader.js"></script>
+	<script src="MainMenu.js"></script>
+	<script src="ChooseCharacter.js"></script>
+	<script src="RichGame.js"></script>
+	<script src="DiniGame.js"></script>
+<!-- 
+	<script src="Game.js"></script>
+	<script src="Win.js"></script>
+	<script src="Lose.js"></script>
+ -->
 
 </head>
 <body>
-<div id="game"></div>
+
+<div id="gameContainer"></div>
 <div id="readme">
-<h2 align = "center">Let's Play!</h2>
+<h2 align = "center">...</h2>
 <ul>
-	<li>Use the left, right and up arrow keys to move left, right and jump.</li>
-	<li>Press 'Z' to run.</li>
-	<li>Press 'X' to shoot.</li>
+	<li></li>
 </ul>
 </div>
+
+<script type="text/javascript">
+window.onload = function() {
+	//	Create your Phaser game and inject it into the gameContainer div.
+	//	We did it in a window.onload event, but you can do it anywhere (requireJS load, anonymous function, jQuery dom ready, - whatever floats your boat)
+	var game = new Phaser.Game(1024, 520, Phaser.AUTO, 'gameContainer');
+	//	Add the States your game has.
+	//	You don't have to do this in the html, it could be done in your Boot state too, but for simplicity I'll keep it here.
+	game.state.add('Boot', BasicGame.Boot);
+	game.state.add('Preloader', BasicGame.Preloader);
+	game.state.add('MainMenu', BasicGame.MainMenu);
+	game.state.add('ChooseCharacter', BasicGame.ChooseCharacter);
+	game.state.add('RichGame', BasicGame.RichGame);
+	game.state.add('DiniGame', BasicGame.DiniGame);
+	game.state.add('Lose', BasicGame.Lose);
+	game.state.add('Win', BasicGame.Win);
+	game.state.start('Boot');
+};
+</script>
+
 </body>
 </html>

@@ -14,19 +14,6 @@ window.onload = function() {
     var game = new Phaser.Game( 800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update, render: render});
     
     function preload() {
-        game.load.image('world', 'assets/world.png');
-        game.load.image('platform1', 'assets/platform1.png');
-        game.load.image('platform2', 'assets/platform2.png');
-        game.load.spritesheet('guy','assets/rich.png',73.5,122.5);
-        game.load.spritesheet('goomba','assets/goomba.png',40,42);
-        game.load.audio('theme', ['assets/Money.mp3']);
-        game.load.audio('dieMusic', ['assets/fail.mp3']);
-        game.load.audio('jump', ['assets/jump.wav']);
-        game.load.image('castle','assets/castle.png');
-        game.load.image('castle2','assets/castle2.png');
-        game.load.image('shell','assets/shell.png');
-        game.load.image('shell2','assets/shell.png');
-        game.load.image('shell3','assets/shell.png');
     }
     
     var platform1;
@@ -147,6 +134,7 @@ window.onload = function() {
     game.physics.arcade.collide(guy, shell, collisionHandler, null, this);
     game.physics.arcade.collide(guy, shell2, collisionHandler, null, this);
     game.physics.arcade.collide(guy, shell3, collisionHandler, null, this);
+    game.physics.arcade.collide(guy, goomba, collisionHandler, null, this);
 	
 	//goomba stuff
 	goomba.animations.play('walk',13,true);
@@ -247,7 +235,9 @@ function collisionHandler (guy, shell2) {
 function collisionHandler (guy, shell3) {
    	   gameOver();
 }
-
+function collisionHandler (guy, goomba) {
+   	   gameOver();
+}
 function fall(){
 	   gameOver();
 }
