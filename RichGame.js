@@ -115,9 +115,9 @@ BasicGame.RichGame.prototype = {
         goomba.body.collideWorldBounds = true;
         goomba.body.velocity.x = -200;
         
-//         theme = this.add.audio('theme',1,true);
+        theme = this.add.audio('theme',1,true);
         jump = this.add.audio('jump');
-//         theme.play('',0,1,true);
+        theme.play('',0,1,true);
         
         guy.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11,12], 13, true);
         guy.animations.add('run', [13,14,15,16,17,18,19,20,21,22], 13, true);
@@ -140,9 +140,9 @@ BasicGame.RichGame.prototype = {
 	gameOver: function (pointer){
 		this.theme.stop();
 		var dieMusic = game.add.audio('dieMusic');
-		this.dieMusic.play();
-		this.guy.body.velocity.y = -300;
-		this.endGame = true;
+		dieMusic.play();
+		guy.body.velocity.y = -300;
+		endGame = true;
 	},
 	
     collisionHandler: function (guy, shell, pointer) {
