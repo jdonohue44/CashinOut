@@ -61,7 +61,7 @@ BasicGame.DiniGame.prototype = {
     create: function () {
     	this.world.setBounds(0, 0, 8000, 520);
     	this.physics.startSystem(Phaser.Physics.ARCADE);
-    	this.physics.arcade.gravity.y = 550;//550
+    	this.physics.arcade.gravity.y = 750;//550
     	this.time.desiredFps = 30;
     	
     	world = this.add.sprite(0, 0, 'world'); 
@@ -263,8 +263,8 @@ BasicGame.DiniGame.prototype = {
 		
 			if (cursors.up.isDown && this.time.now > jumpTimer && guy.body.velocity.y < -2){ //jump
 				jump.play();
-				guy.body.velocity.y = -450;
-				jumpTimer = this.time.now + 750;
+				guy.body.velocity.y = -650;
+				jumpTimer = this.time.now + 850;
 				guy.animations.play('jump',13,false);
 			}
 
@@ -272,12 +272,12 @@ BasicGame.DiniGame.prototype = {
 			{
 				if(!aButton.isDown){//walk
 				guy.scale.x = 1; //facing default direction
-				guy.body.velocity.x = 200;
+				guy.body.velocity.x = 100;
 				guy.animations.play('walk',13,true);//walk
 				}
 				else{//sprint
 				guy.scale.x = 1; //facing default direction
-				guy.body.velocity.x = 350;
+				guy.body.velocity.x = 250;
 				guy.animations.play('run',13,true);
 			   }
 			}
@@ -287,12 +287,12 @@ BasicGame.DiniGame.prototype = {
 			{
 				if(!aButton.isDown){ //walk
 				guy.scale.x = -1; //flip
-				guy.body.velocity.x = -200;
+				guy.body.velocity.x = -100;
 				guy.animations.play('walk', 13, true);
 				}
 				else{ //run
 				guy.scale.x = -1; //flip
-				guy.body.velocity.x = -350;
+				guy.body.velocity.x = -250;
 				guy.animations.play('run',13,true);
 				}
 			}
