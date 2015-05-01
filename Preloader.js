@@ -31,7 +31,7 @@ BasicGame.Preloader.prototype = {
         this.load.image('platform1', 'assets/platform1.png');
         this.load.image('platform2', 'assets/platform2.png');
         this.load.spritesheet('rich','assets/guy4.png',73.5,122.5);
-        this.load.spritesheet('dini','assets/guy1.png',89,135);
+        this.load.spritesheet('dini','assets/guy2.png',89,95);
         this.load.spritesheet('goomba','assets/goomba.png',40,42);
         this.load.audio('theme', ['assets/theme.wav']);
         this.load.audio('dieMusic', ['assets/gameover.wav']);
