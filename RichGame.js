@@ -35,7 +35,7 @@ BasicGame.RichGame = function (game) {
     var platform4;
     var platform5;
     var world;
-    var guy;
+    var rich;
     var castle;
     var shell;
     var shell2;
@@ -70,7 +70,7 @@ BasicGame.RichGame.prototype = {
         platform2 = this.add.sprite(2400, 420, 'platform2');
         platform3 = this.add.sprite(2890, 420, 'platform2');
         platform4 = this.add.sprite(3290, 420, 'platform2');
-        guy = this.add.sprite(50,520,'guy');
+        rich = this.add.sprite(50,520,'rich');
         goomba = this.add.sprite(500,480,'goomba');
         shell = this.add.sprite(1500,580,'shell');
         shell2 = this.add.sprite(3000,580,'shell');
@@ -82,7 +82,7 @@ BasicGame.RichGame.prototype = {
         mole5 = this.add.sprite(7300,520,'mole');
         endGame = false;
         
-        this.physics.enable(guy, Phaser.Physics.ARCADE);
+        this.physics.enable(rich, Phaser.Physics.ARCADE);
         this.physics.enable(platform1, Phaser.Physics.ARCADE);
         this.physics.enable(platform2, Phaser.Physics.ARCADE);
         this.physics.enable(platform3, Phaser.Physics.ARCADE);
@@ -97,10 +97,10 @@ BasicGame.RichGame.prototype = {
         this.physics.enable(mole5, Phaser.Physics.ARCADE);
         this.physics.enable(goomba, Phaser.Physics.ARCADE);
         
-        this.camera.follow(guy);
-    	guy.body.bounce.y = 0.2;
-        guy.body.collideWorldBounds = true;
-        guy.body.gravity.set(0, 180);
+        this.camera.follow(rich);
+    	rich.body.bounce.y = 0.2;
+        rich.body.collideWorldBounds = true;
+        rich.body.gravity.set(0, 180);
         
         platform1.body.collideWorldBounds = true;
         platform1.body.bounce.y = 0.2;
@@ -156,13 +156,13 @@ BasicGame.RichGame.prototype = {
         jump = this.add.audio('jump');
         theme.play('',0,1,true);
         
-        guy.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11,12], 13, true);
-        guy.animations.add('run', [13,14,15,16,17,18,19,20,21,22], 13, true);
-        guy.animations.add('jump', [27,28,29,30,31,32,33,34,35,36,26],13,false);
-        guy.animations.add('stand', [26],13,false);
-        guy.animations.add('turn', [40],13,false);
-        guy.animations.add('die', [31],13,false);
-        guy.anchor.setTo(.5, 1); //so it flips around its middle
+        rich.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11,12], 13, true);
+        rich.animations.add('run', [13,14,15,16,17,18,19,20,21,22], 13, true);
+        rich.animations.add('jump', [27,28,29,30,31,32,33,34,35,36,26],13,false);
+        rich.animations.add('stand', [26],13,false);
+        rich.animations.add('turn', [40],13,false);
+        rich.animations.add('die', [31],13,false);
+        rich.anchor.setTo(.5, 1); //so it flips around its middle
         
         goomba.animations.add('walk', [0,1,2,3,4], 13, true);
         goomba.anchor.setTo(.5, 1); //so it flips around its middle
@@ -178,13 +178,13 @@ BasicGame.RichGame.prototype = {
 		theme.stop();
 		var dieMusic = this.add.audio('dieMusic');
 		dieMusic.play();
-		guy.body.velocity.y = -300;
+		rich.body.velocity.y = -300;
 		endGame = true;
 		this.state.start("Lose");
 		//Go to Lose State
 	},
 	
-    collisionHandler: function (guy, object) {
+    collisionHandler: function (rich, object) {
    	   this.gameOver(this);
     },
     
@@ -200,42 +200,42 @@ BasicGame.RichGame.prototype = {
     },
 
     update: function () {
-    guy.body.velocity.x = 0;
-    this.physics.arcade.collide(guy, platform1);
-    this.physics.arcade.collide(guy, platform2);
-    this.physics.arcade.collide(guy, platform3);
-    this.physics.arcade.collide(guy, platform4);
-    this.physics.arcade.collide(guy, shell,  this.collisionHandler, null, this);
-    this.physics.arcade.collide(guy, shell2, this.collisionHandler, null, this);
-    this.physics.arcade.collide(guy, shell3, this.collisionHandler, null, this);
-    this.physics.arcade.collide(guy, goomba, this.collisionHandler, null, this);
-    this.physics.arcade.collide(guy, mole,  this.collisionHandler, null, this);
-    this.physics.arcade.collide(guy, mole2, this.collisionHandler, null, this);
-    this.physics.arcade.collide(guy, mole3, this.collisionHandler, null, this);
-    this.physics.arcade.collide(guy, mole4, this.collisionHandler, null, this);
-    this.physics.arcade.collide(guy, mole5, this.collisionHandler, null, this);
+    rich.body.velocity.x = 0;
+    this.physics.arcade.collide(rich, platform1);
+    this.physics.arcade.collide(rich, platform2);
+    this.physics.arcade.collide(rich, platform3);
+    this.physics.arcade.collide(rich, platform4);
+    this.physics.arcade.collide(rich, shell,  this.collisionHandler, null, this);
+    this.physics.arcade.collide(rich, shell2, this.collisionHandler, null, this);
+    this.physics.arcade.collide(rich, shell3, this.collisionHandler, null, this);
+    this.physics.arcade.collide(rich, goomba, this.collisionHandler, null, this);
+    this.physics.arcade.collide(rich, mole,  this.collisionHandler, null, this);
+    this.physics.arcade.collide(rich, mole2, this.collisionHandler, null, this);
+    this.physics.arcade.collide(rich, mole3, this.collisionHandler, null, this);
+    this.physics.arcade.collide(rich, mole4, this.collisionHandler, null, this);
+    this.physics.arcade.collide(rich, mole5, this.collisionHandler, null, this);
     
-    if((Math.abs(guy.body.x - mole.body.x) < 200) && (this.time.now > moleTimer)) {
+    if((Math.abs(rich.body.x - mole.body.x) < 200) && (this.time.now > moleTimer)) {
     	mole.body.velocity.y = -300;
     	moleTimer = this.time.now + 2050;
     }
     
-    if((Math.abs(guy.body.x - mole2.body.x) < 200) && (this.time.now > moleTimer)) {
+    if((Math.abs(rich.body.x - mole2.body.x) < 200) && (this.time.now > moleTimer)) {
     	mole2.body.velocity.y = -400;
     	moleTimer = this.time.now + 2050;
     }
 	
-	if((Math.abs(guy.body.x - mole3.body.x) < 200) && (this.time.now > moleTimer)) {
+	if((Math.abs(rich.body.x - mole3.body.x) < 200) && (this.time.now > moleTimer)) {
     	mole3.body.velocity.y = -170;
     	moleTimer = this.time.now + 2050;
     }
 	
-	if((Math.abs(guy.body.x - mole4.body.x) < 200) && (this.time.now > moleTimer)) {
+	if((Math.abs(rich.body.x - mole4.body.x) < 200) && (this.time.now > moleTimer)) {
     	mole4.body.velocity.y = -400;
     	moleTimer = this.time.now + 2050;
     }
 	
-	if((Math.abs(guy.body.x - mole5.body.x) < 200) && (this.time.now > moleTimer)) {
+	if((Math.abs(rich.body.x - mole5.body.x) < 200) && (this.time.now > moleTimer)) {
     	mole5.body.velocity.y = -330;
     	moleTimer = this.time.now + 2050;
     }
@@ -257,28 +257,28 @@ BasicGame.RichGame.prototype = {
 	if(!endGame){
 	
 	
-			if((guy.body.x > 2121) && (guy.body.x < 3604) && (guy.body.y > 370)){ //guy falls in water
+			if((rich.body.x > 2121) && (rich.body.x < 3604) && (rich.body.y > 370)){ //rich falls in water
 				this.gameOver(this);
 			}
 		
-			if (cursors.up.isDown && this.time.now > jumpTimer && guy.body.velocity.y < -2){ //jump
+			if (cursors.up.isDown && this.time.now > jumpTimer && rich.body.velocity.y < -2){ //jump
 				jump.play();
-				guy.body.velocity.y = -450;
+				rich.body.velocity.y = -450;
 				jumpTimer = this.time.now + 750;
-				guy.animations.play('jump',13,false);
+				rich.animations.play('jump',13,false);
 			}
 
 			if (cursors.right.isDown) //move right
 			{
 				if(!aButton.isDown){//walk
-				guy.scale.x = 1; //facing default direction
-				guy.body.velocity.x = 200;
-				guy.animations.play('walk',13,true);//walk
+				rich.scale.x = 1; //facing default direction
+				rich.body.velocity.x = 200;
+				rich.animations.play('walk',13,true);//walk
 				}
 				else{//sprint
-				guy.scale.x = 1; //facing default direction
-				guy.body.velocity.x = 350;
-				guy.animations.play('run',13,true);
+				rich.scale.x = 1; //facing default direction
+				rich.body.velocity.x = 350;
+				rich.animations.play('run',13,true);
 			   }
 			}
 	
@@ -286,22 +286,22 @@ BasicGame.RichGame.prototype = {
 			else if (cursors.left.isDown) //move left
 			{
 				if(!aButton.isDown){ //walk
-				guy.scale.x = -1; //flip
-				guy.body.velocity.x = -200;
-				guy.animations.play('walk', 13, true);
+				rich.scale.x = -1; //flip
+				rich.body.velocity.x = -200;
+				rich.animations.play('walk', 13, true);
 				}
 				else{ //run
-				guy.scale.x = -1; //flip
-				guy.body.velocity.x = -350;
-				guy.animations.play('run',13,true);
+				rich.scale.x = -1; //flip
+				rich.body.velocity.x = -350;
+				rich.animations.play('run',13,true);
 				}
 			}
 	
 			else if (!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown){ //stand still
-				guy.animations.play('stand',13,true);
+				rich.animations.play('stand',13,true);
 			}
 		  
-			if(guy.body.x > 7550){ //made it to castle
+			if(rich.body.x > 7550){ //made it to castle
 				theme.stop();
 				this.state.start("Win");
 
@@ -309,9 +309,9 @@ BasicGame.RichGame.prototype = {
 			}
 			
         else{ //died
-			guy.animations.play('die',13,true);
-			guy.body.collideWorldBounds = false;
-			guy.body.immovable = true;
+			rich.animations.play('die',13,true);
+			rich.body.collideWorldBounds = false;
+			rich.body.immovable = true;
         }
 }
 };
