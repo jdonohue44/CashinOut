@@ -16,13 +16,15 @@ BasicGame.MainMenu.prototype = {
 		this.add.sprite(-1, 0, 'preloaderBackground');
 		var style = { font: "48px Arial", fill: "#ffffff", align: "center" };
 		
-		var text = this.add.text(500, 120, "Richio & Dinio", style);
+		var text = this.add.text(500, 120, "Richio", style);
 		text.anchor.set(0.5);
 		//  And now we'll color in some of the letters
-		text.addColor('#ffff00', 1);
-		text.addColor('#ffffff', 5);
-		text.addColor('#ff00ff', 10);
-		text.addColor('#ffffff', 15);
+		text.addColor('#ffff00', 0);
+		text.addColor('#ff00ff', 1);
+		text.addColor('#9A2EFE', 2);
+		text.addColor('#01DF01', 3);
+		text.addColor('#FF0040', 4);
+		text.addColor('#ffff00', 5);
 		
 		this.music = this.add.audio("startMusic");
 		this.music.play();
