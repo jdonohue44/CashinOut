@@ -8,14 +8,12 @@ BasicGame.Win.prototype = {
     create: function () {
         this.world.setBounds(0,0,1028,520);
     	this.background = this.add.sprite(-1,0,'preloaderBackground');
-		var style = { font: "48px Arial", fill: "#ffffff", align: "center" };
-		var text = this.add.text(500,230, "Congratulations! \nYou win!\n", style);
-		text.anchor.set(0.5);
-		//  And now we'll color in some of the letters
-		text.addColor('#ffff00', 16);
-		text.addColor('#ffffff', 25);
-		text.addColor('#ff00ff', 28);
-		text.addColor('#ffffff', 32);
+		var style1 = { font: "48px Arial", fill: "white", align: "center" };
+		var style2 = { font: "136px Comic Sans MS", fill: "#4B088A", align: "center" };
+		var text1 = this.add.text(500,150, "Congratulations! \n", style1);
+		var text2 = this.add.text(498,215, "YOU WIN", style2);
+		text1.anchor.set(0.5);
+		text2.anchor.set(0.5);
 		
     	this.winMusic = this.add.audio('winMusic');
         this.winMusic.play();

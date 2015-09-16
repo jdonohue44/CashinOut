@@ -37,12 +37,9 @@ BasicGame.ChooseCharacter.prototype = {
 
 	update: function () {
 
-		//	Do some nice funky main menu effect here
-
 	},
 
 	chooseRich: function (pointer) {
-
 		//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
 		//	And start the actual game
 		this.music2.stop();
